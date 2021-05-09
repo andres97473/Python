@@ -16,8 +16,6 @@ git push
 >> Descargar los cambios del repositorio
 git pull
 
->>probando el git pull
-
 
 
 
