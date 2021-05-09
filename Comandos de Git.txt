@@ -1,0 +1,21 @@
+1. Subir cambios al repositorio
+
+>> Agregar carpeta a los cambios
+git add .
+
+>> Agregar el commit y le ponemos un mensaje
+git commit -m "Primer Commit"
+
+>> Subir los cambios al repositorio
+git push
+
+
+
+2. Descargar cambios
+
+>> Descargar los cambios del repositorio
+git pull
+
+
+
+
