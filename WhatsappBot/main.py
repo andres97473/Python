@@ -15,7 +15,7 @@ from selenium.common.exceptions import TimeoutException
 # Constantes
 usuario=getpass.getuser()
 telefono_local="3166651382"
-noEncontrados="0,"
+noEncontrados=" "
 
 
 # Opciones de navegacion
@@ -27,8 +27,7 @@ options.add_argument("user-data-dir=C:\\Users\\"+str(usuario)+"\\AppData\\Local\
 driver_path = 'D:\\python\\seleniumChrome\\driver\\chromedriver.exe'
 
 # Leer el archivo de citas
-parsedMessage = ''
-data=pd.read_csv('citas.csv')
+data = pd.read_csv('citas.csv', delimiter='|', encoding='latin-1')
 data_dict = data.to_dict('list')
 # Listado de campos
 documento = data_dict['num_doc_usr']
@@ -43,13 +42,14 @@ especialidad = data_dict['especialidad']
 profesional = data_dict['profesional']
 combo = zip(documento,phone_no,apellido1,apellido2,nombre1,nombre2,dia_cita,hora_cita,especialidad,profesional)
 
-first = True
+# Variables
 conteo=0
 driver = webdriver.Chrome(driver_path, chrome_options=options)
 inicial = datetime.datetime.now()
+parsedMessage = ''
 for documento,phone_no,apellido1,apellido2,nombre1,nombre2,dia_cita,hora_cita,especialidad,profesional in combo:
     parsedMessage= "Estimado usuario "+nombre1+" "+nombre2+" "+apellido1+" "+apellido2+", "\
-        +"La E.S.E. Centro hospital Luis Antonio Montero, le recuerda la oportuna asistencia a si cita "\
+        +"La E.S.E. Centro hospital Luis Antonio Montero, le recuerda la oportuna asistencia a su cita "\
         +" de "+especialidad+" "\
         +"El dia "+str(dia_cita)+" a las "+str(hora_cita)+", "\
         +"con el Doctor(a) "+profesional+", "\
@@ -70,7 +70,7 @@ for documento,phone_no,apellido1,apellido2,nombre1,nombre2,dia_cita,hora_cita,es
         time.sleep(3)
         conteo += 1
     except TimeoutException: 
-        noEncontrados=noEncontrados+phone_no+","  
+        noEncontrados=noEncontrados+str(phone_no)+","  
         print("Numero no encontrado")
 final = datetime.datetime.now()
 diferencia = final - inicial
