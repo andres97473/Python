@@ -12,10 +12,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
-# Usuario de sistema
+# Constantes
 usuario=getpass.getuser()
 telefono_local="3166651382"
-noEncontrados=""
+noEncontrados="0,"
+
 
 # Opciones de navegacion
 options = webdriver.ChromeOptions()
@@ -24,16 +25,35 @@ options.add_argument('--disable-extensions')
 options.add_argument("user-data-dir=C:\\Users\\"+str(usuario)+"\\AppData\\Local\\Google\\Chrome\\User Data")
 
 driver_path = 'D:\\python\\seleniumChrome\\driver\\chromedriver.exe'
-data=pd.read_csv('datos.csv')
+
+# Leer el archivo de citas
+parsedMessage = ''
+data=pd.read_csv('citas.csv')
 data_dict = data.to_dict('list')
+# Listado de campos
+documento = data_dict['num_doc_usr']
 phone_no = data_dict['celular']
-parsedMessage = data_dict['mensaje']
-combo = zip(phone_no,parsedMessage)
+apellido1 = data_dict['apellido1']
+apellido2 = data_dict['apellido2']
+nombre1 = data_dict['nombre1']
+nombre2 = data_dict['nombre2']
+dia_cita = data_dict['fec_cita']
+hora_cita = data_dict['hora_cita']
+especialidad = data_dict['especialidad']
+profesional = data_dict['profesional']
+combo = zip(documento,phone_no,apellido1,apellido2,nombre1,nombre2,dia_cita,hora_cita,especialidad,profesional)
+
 first = True
 conteo=0
 driver = webdriver.Chrome(driver_path, chrome_options=options)
 inicial = datetime.datetime.now()
-for phone_no,parsedMessage in combo:
+for documento,phone_no,apellido1,apellido2,nombre1,nombre2,dia_cita,hora_cita,especialidad,profesional in combo:
+    parsedMessage= "Estimado usuario "+nombre1+" "+nombre2+" "+apellido1+" "+apellido2+", "\
+        +"La E.S.E. Centro hospital Luis Antonio Montero, le recuerda la oportuna asistencia a si cita "\
+        +" de "+especialidad+" "\
+        +"El dia "+str(dia_cita)+" a las "+str(hora_cita)+", "\
+        +"con el Doctor(a) "+profesional+", "\
+        +"En caso de no poder asistir recuerde cancelar con 24 horas de anticipacion."
     time.sleep(2)
     driver.get('https://web.whatsapp.com/send?phone=+57'+str(phone_no))  
 
@@ -50,7 +70,7 @@ for phone_no,parsedMessage in combo:
         time.sleep(3)
         conteo += 1
     except TimeoutException: 
-        noEncontrados=noEncontrados+str(phone_no)+","  
+        noEncontrados=noEncontrados+phone_no+","  
         print("Numero no encontrado")
 final = datetime.datetime.now()
 diferencia = final - inicial
