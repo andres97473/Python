@@ -1,3 +1,7 @@
+>> Ingresar usuario en consola
+git config --global user.name "John Doe"
+git config --global user.email johndoe@example.com
+
 1. Subir cambios al repositorio
 
 >> Agregar carpeta a los cambios
