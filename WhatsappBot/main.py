@@ -17,7 +17,6 @@ usuario=getpass.getuser()
 telefono_local="3166651382"
 noEncontrados=" "
 
-
 # Opciones de navegacion
 options = webdriver.ChromeOptions()
 options.add_argument('--start-maximized')
