@@ -1,6 +1,5 @@
 # Librerías
 import pandas as pd
-import pyautogui as pg
 import datetime
 import time
 import math
@@ -11,6 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from os import path
 
 # Constantes
 usuario=getpass.getuser()
@@ -24,7 +24,7 @@ options.add_argument('--start-maximized')
 options.add_argument('--disable-extensions')
 options.add_argument("user-data-dir=C:\\Users\\"+str(usuario)+"\\AppData\\Local\\Google\\Chrome\\User Data")
 
-driver_path = 'D:\\python\\seleniumChrome\\driver\\chromedriver.exe'
+driver_path = path.abspath("driver\\chromedriver.exe")
 
 # Leer el archivo de citas
 data = pd.read_csv('citas.csv', delimiter='|', encoding='latin-1')
