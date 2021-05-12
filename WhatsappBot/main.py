@@ -4,7 +4,6 @@ import datetime
 import time
 import math
 import getpass
-from datetime import date
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
