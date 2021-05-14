@@ -40,6 +40,12 @@ especialidad = data_dict['especialidad']
 profesional = data_dict['profesional']
 combo = zip(documento,phone_no,apellido1,apellido2,nombre1,nombre2,dia_cita,hora_cita,especialidad,profesional)
 
+# Archivo con los elementos que no se enviaron
+citas_error="citas_error.csv"
+csv=open(citas_error,'w')
+titulor="num_doc_usr|celular|apellido1|apellido2|nombre1|nombre2|fec_cita|hora_cita|especialidad|profesional\n"
+csv.write(titulor)
+
 # Variables
 conteo=0
 driver = webdriver.Chrome(driver_path, chrome_options=options)
@@ -69,7 +75,9 @@ for documento,phone_no,apellido1,apellido2,nombre1,nombre2,dia_cita,hora_cita,es
         conteo += 1
     except TimeoutException: 
         noEncontrados=noEncontrados+str(phone_no)+","  
-        print("Numero no encontrado")
+        print("Numero no encontrado: "+str(phone_no)+" Del usuario "+str(documento))
+        filas=str(documento)+"|"+str(phone_no)+"|"+apellido1+"|"+apellido2+"|"+nombre1+"|"+nombre2+"|"+dia_cita+"|"+hora_cita+"|"+especialidad+"|"+profesional+"\n"
+        csv.write(filas)
 final = datetime.datetime.now()
 diferencia = final - inicial
 segundos = diferencia.seconds
