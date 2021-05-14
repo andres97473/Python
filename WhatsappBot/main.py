@@ -4,6 +4,7 @@ import datetime
 import time
 import math
 import getpass
+import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -44,7 +45,7 @@ combo = zip(documento,phone_no,apellido1,apellido2,nombre1,nombre2,dia_cita,hora
 citas_error="citas_error.csv"
 csv=open(citas_error,'w')
 titulor="num_doc_usr|celular|apellido1|apellido2|nombre1|nombre2|fec_cita|hora_cita|especialidad|profesional\n"
-csv.write(titulor)
+csv.write(titulor)  
 
 # Variables
 conteo=0
@@ -73,11 +74,12 @@ for documento,phone_no,apellido1,apellido2,nombre1,nombre2,dia_cita,hora_cita,es
                 .click()
         time.sleep(3)
         conteo += 1
-    except TimeoutException: 
+    except TimeoutException:               
         noEncontrados=noEncontrados+str(phone_no)+","  
         print("Numero no encontrado: "+str(phone_no)+" Del usuario "+str(documento))        
         filas=str(documento)+"|"+str(phone_no)+"|"+apellido1+"|"+apellido2+"|"+nombre1+"|"+nombre2+"|"+dia_cita+"|"+hora_cita+"|"+especialidad+"|"+profesional+"\n"
         csv.write(filas)
+csv.close()
 final = datetime.datetime.now()
 diferencia = final - inicial
 segundos = diferencia.seconds
@@ -98,4 +100,18 @@ WebDriverWait(driver, 20)\
         .click()
 time.sleep(3)
 driver.quit()
+
+# Validar archivo de errores
+archivo = open(citas_error,"r",encoding="latin-1")
+lineas= archivo.readlines()
+conteo_lineas=len(lineas)
+print("El archivo contiene "+str(conteo_lineas)+" Lineas")
+archivo.close()
+
+if(conteo_lineas < 2 ):
+    os.remove(citas_error)
+    print("El archivo "+citas_error+" ha sido eliminado ya que no tiene contenido")
+else:
+    print("Se ha generado un archivo con los elementos no encontrados")
+
 print(resultado)
